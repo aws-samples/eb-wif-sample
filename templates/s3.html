@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block appname %}AWS Identity Federation Demo{% endblock %}
+
+{% block content %}
+		<div class="jumbotron">
+			<h1>List all Buckets</h1>
+		</div>
+		
+		<table class="table table-condensed">
+			<tr><th></th><th>Welcome {{ args['firstname'] }} !</th>
+			<tr>
+				<td rowspan="2"><img src="{{ args['picture'] }}" width="50"></td>
+				<td>Logged on as {{ args['provider'] }} user : {{ args['email'] }}</td>
+			</tr>
+			<tr>
+				<td>AWS Temporary Access Key : {{ args['access_key'] }}</td>
+			</tr>
+		</table>	
+		
+		<p/>
+
+		<table class="table table-striped">
+			<tr><th>Bucket Name</th></tr>
+			{% for bucket in buckets %}
+			    <tr><td>{{ bucket }}</td></tr>
+			{% endfor %}
+		</table>
+{% endblock %}		

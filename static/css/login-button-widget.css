@@ -1,0 +1,87 @@
+div.widget {
+    position: relative;
+    width: 373px;
+    height: 240px;
+    padding: 0;
+    margin: 0 auto 0 auto
+}
+
+div#view {
+    overflow: hidden;
+    margin: 0 20px 0 20px;
+    padding: 0
+}
+
+div#pages {
+    position: absolute;
+    width: 650px;
+}
+
+ul.providers {
+    width: 150px;
+    padding: 0;
+    margin: 0 5px 5px 5px;
+    float: left;
+    list-style-type: none
+}
+
+ul.providers li {
+    height: 50px;
+    width: 150px;
+    padding: 0;
+    margin: 10px 0 8px 0
+}
+
+ul.providers li:hover {
+    cursor: pointer
+}
+
+ul.providers li.off:hover {
+    cursor: no-drop;
+}
+
+ul.col2 li {
+    margin-left: 13px
+}
+
+/* sprite */
+ul.providers li {
+    background: url(/static/img/logos.png) no-repeat;
+}
+
+li#google {
+    background-position: 0px 0px;
+}
+
+li#google:hover {
+    background-position: -150px 0px;
+}
+
+li#google.press {
+    background-position: -300px 0px;
+}
+
+li#facebook {
+    background-position: 0px -50px;
+}
+
+li#facebook:hover {
+    background-position: -150px -50px;
+}
+
+li#facebook.press {
+    background-position: -300px -50px;
+}
+
+li#amazon {
+    background-position: 0px -100px;
+}
+
+li#amazon:hover {
+    background-position: -150px -100px;
+}
+
+li#amazon.press {
+    background-position: -300px -100px;
+}
+

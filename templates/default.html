@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block appname %}AWS Identity Federation Demo{% endblock %}
+
+{% block content %}
+
+<link href="/static/css/login-button-widget.css" rel="stylesheet">
+
+
+<div class="jumbotron">
+    <h1>Identity Federation Demo</h1>
+
+    <p class="lead">This demonstrates using Web Identify Federation to authenticate users with their Amazon.com (and optionally Google or Facebook) and use that authentication to retrieve temporary AWS credentials .  When authenticated, you will be able to list the S3 Buckets in your AWS account</p>
+
+    <p class="lead">Please signin to one of these services</p>
+</div>
+
+<div id="widget" class="widget">
+    <div id="view">
+        <div id="pages">
+            <ul class="providers">
+                <li id="amazon" class="off">
+                    <span style="text-indent: -9999px; display: inline-block;">amazon</span>
+                </li>
+            </ul>
+            <ul class="providers col2">
+                <li id="facebook" class="off">
+                    <span style="text-indent: -9999px; display: inline-block;">facebook</span>
+                </li>
+                <li id="google" class="off">
+                    <span style="text-indent: -9999px; display: inline-block;">google</span>
+                </li>
+            </ul>
+        </div>
+        <!-- pages -->
+    </div>
+    <!-- view -->
+</div> <!-- widget -->
+
+
+<script src="/static/js/jquery-2.0.3.min.js"></script>
+
+<script>
+    // Add a click event to any enabled auth provider
+    {% for provider in enabled_providers %}
+      $("li#{{ provider }}").removeClass("off").addClass("on");
+      $("li#{{ provider }}").click(function () {
+          // call python code for redirect to provider
+          // this allows to manage changes in callback URLs between local and server machines
+          // at a central location (the python code itself)
+          loginURL = '/initiateLogin/{{ provider }}';
+          window.location.href = loginURL;
+      });
+    {% endfor %}
+    
+    // Add a warning popup to any disabled provider
+    $("ul.providers li.off").each(function() {
+      $(this).click(function() {
+        alert("This provider (" + $(this).attr("id") + ") is disabled because it is not property configured. Please add the necessary provider-specific configuration options to the environment this application is running in.");
+      });
+    });
+</script>
+
+
+{% endblock %}		
