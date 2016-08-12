@@ -1,4 +1,4 @@
-import json
+import json, codecs
 from IdentityProvider import IdentityProvider 
 from flask import request
 
@@ -16,7 +16,12 @@ class GoogleIdentityProvider(IdentityProvider):
         return loginURL
         
     def doGetToken(self,code):
-        import httplib, urllib
+        import urllib
+        try:
+            import http.client as httplib
+        # Python 2
+        except ImportError:
+            import httplib
     
         host = 'accounts.google.com'
         path = '/o/oauth2/token'
@@ -32,12 +37,18 @@ class GoogleIdentityProvider(IdentityProvider):
         conn = httplib.HTTPSConnection(host)
         conn.request('POST', path, data, headers)
         resp = conn.getresponse()
-        return json.loads(resp.read())
+        reader = codecs.getreader("utf-8")
+        return json.load(reader(resp))
         
     def doGetUserProfile(self,token):
-        import urllib2, json
-        response = urllib2.urlopen('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + token)
-        googleProfile = json.loads(response.read())
+        try :
+            from urllib.request import urlopen
+        # Python 2
+        except ImportError:
+            from urllib2 import urlopen
+        response = urlopen('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + token)
+        reader = codecs.getreader("utf-8")
+        googleProfile = json.load(reader(response))
         return { 'name' : googleProfile['name'], 'firstname' : googleProfile['given_name'],
                  'email' : googleProfile['email'], 'picture' : googleProfile['picture'],
                  'provider' : 'Google'}
