@@ -30,19 +30,19 @@ class IdentityProvider:
             
     def oauthCallback(self,code):
             # echange authorization code  
-            print '--- exchanging token for code : ' + code  
+            print('--- exchanging token for code : ' + code)
             token = self.doGetToken(code)
-            print '--- received token : ' + str(token)
+            print('--- received token : ' + str(token))
 
             # Call user service
-            print '--- Getting user Profile for access_token : ' + self.getAccessToken(token)
+            print('--- Getting user Profile for access_token : ' + self.getAccessToken(token))
             profile = self.doGetUserProfile(self.getAccessToken(token))
-            print '--- received profile : ' + str(profile)
+            print('--- received profile : ' + str(profile))
 
             # call AWS STS 
-            print '--- Getting AWS Temp Credentials for token : ' + self.getIDToken(token)
+            print('--- Getting AWS Temp Credentials for token : ' + self.getIDToken(token))
             credentials = self.doGetAccessCredentials(self.getIDToken(token), profile)
-            print '--- received credentials : ' + str(credentials)
+            print('--- received credentials : ' + str(credentials))
         
             return credentials, profile
     

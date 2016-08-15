@@ -1,4 +1,5 @@
 import json
+import codecs
 from IdentityProvider import IdentityProvider 
 from flask import request
 
@@ -13,7 +14,11 @@ class AmazonIdentityProvider(IdentityProvider):
         return loginURL
         
     def doGetToken(self,code):
-        import httplib, urllib
+        try:
+            import http.client as httplib
+        # Python 2
+        except ImportError:
+            import httplib
     
         host = 'api.amazon.com'
         path = '/auth/o2/token'
@@ -29,17 +34,23 @@ class AmazonIdentityProvider(IdentityProvider):
         conn = httplib.HTTPSConnection(host)
         conn.request('POST', path, data, headers)
         resp = conn.getresponse()
-        return json.loads(resp.read())
+        reader = codecs.getreader("utf-8")
+        return json.load(reader(resp))
     
     def doGetUserProfile(self,token):
-        import urllib2, json
+        try :
+            from urllib.request import urlopen
+        # Python 2
+        except ImportError:
+            from urllib2 import urlopen
         
         url = 'https://api.amazon.com/user/profile?'
         url = url + '&access_token=' + token
     
-        response = urllib2.urlopen(url)
-        amazonProfile = json.loads(response.read())
-        #print '--- amazonProfile : ' + str(amazonProfile)
+        response = urlopen(url)
+        reader = codecs.getreader("utf-8")
+        amazonProfile = json.load(reader(response))
+        #print('--- amazonProfile : ' + str(amazonProfile))
     
         return { 'name' : amazonProfile['name'], 'firstname' : amazonProfile['name'].split()[0],
                  'email' : amazonProfile['email'], 'picture' : '/static/img/amazon-logo-50.png',

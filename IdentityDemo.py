@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
 import json
 import os, binascii
 from flask import Flask, render_template, request, url_for, redirect, session
@@ -36,13 +37,13 @@ def privacy():
 
 @application.route('/initiateLogin/<provider>')
 def initiateLogin(provider):
-    print '--- Initiate login for provider : ' + provider
+    print('--- Initiate login for provider : ' + provider)
     return redirect(getIdentityProvider(provider).loginURL())
 
 @application.route('/oauth2callback/<provider>')
 def OAuth2Callback(provider):
-    print '--- OAuth2Callback called for IP : ' + provider  
-    
+    print('--- OAuth2Callback called for IP : ' + provider)
+
     code  = request.args.get('code', 'unknown') 
     if (code == 'unknown'):
         result = render_template('error.html')
@@ -54,12 +55,12 @@ def OAuth2Callback(provider):
         # https://github.com/mitsuhiko/flask/issues/773
         #url = url_for('s3', _scheme="https", _external=True, **dict(credentials.items() + profile.items()))
         url = url_for('s3', _scheme="https", _external=True)
-        #print '--- redirect url : ' + url
+        #print('--- redirect url : ' + url)
 
         # save credentials and profile in the server side session
         session.update(credentials)
         session.update(profile)
-        #print '--- session : ' + str(session)
+        #print('--- session : ' + str(session))
 
         result = redirect(url)
             
